@@ -1,0 +1,810 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-WLB3DPRW48"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-WLB3DPRW48');
+  </script>
+  <script
+    type="module"
+    src="https://gradio.s3-us-west-2.amazonaws.com/5.9.1/gradio.js"
+  ></script>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <meta content="CodeARC: Benchmarking Reasoning Capabilities of LLM Agents for Inductive Program Synthesis" property="og:title">
+  <meta content="CodeARC: Benchmarking Reasoning Capabilities of LLM Agents for Inductive Program Synthesis" property="twitter:title">
+  <meta property="og:type" content="website">
+ 
+  <title>CodeARC: Benchmarking Reasoning Capabilities of LLM Agents for Inductive Program Synthesis</title>
+  <link rel="icon" type="image/x-icon" href="assets/favicon_io/favicon.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="assets/favicon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon_io/favicon.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="assets/favicon_io/favicon.png">
+
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet">
+
+  <link rel="stylesheet" href="./static/css/bulma.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-carousel.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-slider.min.css">
+  <link rel="stylesheet" href="./static/css/fontawesome.all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="./static/css/index.css">
+  <link rel="stylesheet" href="./static/css/custom.css">
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script defer src="./static/js/fontawesome.all.min.js"></script>
+  <script src="./static/js/bulma-carousel.min.js"></script>
+  <script src="./static/js/bulma-slider.min.js"></script>
+
+  <style>
+    .image-set {
+      display: flex;
+      justify-content: space-around;
+      margin-top: 3px;
+      margin-bottom: 3px;
+    }
+    .hypotheses {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    .square-image {
+      width: 90px;
+      height: 90px;
+      object-fit: cover;
+      overflow: hidden;
+    }
+    #leaderboard-table td, #leaderboard-table th {
+      text-align: center;
+    }
+    table {
+      border-collapse: collapse;
+      border: 1px solid #ddd;
+      width: 100%;
+    }
+
+    th, td {
+      border: 1px solid #ddd;
+      padding: 8px;
+    }
+
+    th {
+      background-color: #f2f2f2;
+      text-align: left;
+    }
+    img {
+      display: block;
+      margin: 0 auto;
+      width: 60%;
+    }
+  </style>
+
+  <meta charset="utf-8">
+  <link rel="dns-prefetch" href="https://github.githubassets.com">
+  <link rel="dns-prefetch" href="https://avatars.githubusercontent.com">
+  <link rel="dns-prefetch" href="https://github-cloud.s3.amazonaws.com">
+  <link rel="dns-prefetch" href="https://user-images.githubusercontent.com/">
+  <link rel="preconnect" href="https://github.githubassets.com" crossorigin>
+  <link rel="preconnect" href="https://avatars.githubusercontent.com">
+
+  <link crossorigin="anonymous" media="all" rel="stylesheet" href="https://github.githubassets.com/assets/light-74231a1f3bbb.css"/>
+  <link crossorigin="anonymous" media="all" rel="stylesheet" href="https://github.githubassets.com/assets/dark-8a995f0bacd4.css"/>
+  <link data-color-theme="dark_dimmed" crossorigin="anonymous" media="all" rel="stylesheet" data-href="https://github.githubassets.com/assets/dark_dimmed-f37fb7684b1f.css"/>
+  <link data-color-theme="dark_high_contrast" crossorigin="anonymous" media="all" rel="stylesheet" data-href="https://github.githubassets.com/assets/dark_high_contrast-9ac301c3ebe5.css"/>
+  <link data-color-theme="dark_colorblind" crossorigin="anonymous" media="all" rel="stylesheet" data-href="https://github.githubassets.com/assets/dark_colorblind-cd826e8636dc.css"/>
+  <link data-color-theme="light_colorblind" crossorigin="anonymous" media="all" rel="stylesheet" data-href="https://github.githubassets.com/assets/light_colorblind-f91b0f603451.css"/>
+  <link data-color-theme="light_high_contrast" crossorigin="anonymous" media="all" rel="stylesheet" data-href="https://github.githubassets.com/assets/light_high_contrast-83beb16e0ecf.css"/>
+  <link data-color-theme="light_tritanopia" crossorigin="anonymous" media="all" rel="stylesheet" data-href="https://github.githubassets.com/assets/light_tritanopia-6e122dab64fc.css"/>
+  <link data-color-theme="dark_tritanopia" crossorigin="anonymous" media="all" rel="stylesheet" data-href="https://github.githubassets.com/assets/dark_tritanopia-18119e682df0.css"/>
+
+  <link crossorigin="anonymous" media="all" rel="stylesheet" href="https://github.githubassets.com/assets/primer-primitives-225433424a87.css"/>
+  <link crossorigin="anonymous" media="all" rel="stylesheet" href="https://github.githubassets.com/assets/primer-cba26849680f.css"/>
+  <link crossorigin="anonymous" media="all" rel="stylesheet" href="https://github.githubassets.com/assets/global-03f97e65e478.css"/>
+  <link crossorigin="anonymous" media="all" rel="stylesheet" href="https://github.githubassets.com/assets/github-ea73c9cb5377.css"/>
+  <link crossorigin="anonymous" media="all" rel="stylesheet" href="https://github.githubassets.com/assets/repository-4fce88777fa8.css"/>
+  <link crossorigin="anonymous" media="all" rel="stylesheet" href="https://github.githubassets.com/assets/code-0210be90f4d3.css"/>
+
+  <script type="application/json" id="client-env">{"locale":"en","featureFlags":["allow_subscription_halted_error","copilot_immersive_issue_preview","copilot_new_references_ui","copilot_chat_attach_images","copilot_chat_attachments","copilot_chat_repo_custom_instructions_preview","copilot_chat_opening_thread_switch","copilot_chat_wholearea_dd","copilot_dotcom_chat_file_upload","copilot_no_floating_button","copilot_topics_as_references","copilot_read_shared_conversation","copilot_duplicate_thread","copilot_share_active_subthread","copilot_buffered_streaming","dotcom_chat_client_side_skills","experimentation_azure_variant_endpoint","failbot_handle_non_errors","geojson_azure_maps","ghost_pilot_confidence_truncation_25","ghost_pilot_confidence_truncation_40","github_models_gateway","github_models_gateway_parse_params","github_models_o3_mini_streaming","insert_before_patch","issues_advanced_search","issues_react_remove_placeholders","issues_react_blur_item_picker_on_close","issues_advanced_search_nested_ownership_filters","issues_dashboard_no_redirects","marketing_pages_search_explore_provider","memex_roadmap_drag_style","primer_react_css_modules_ga","react_data_router_pull_requests","react_override_default_key","remove_child_patch","repository_suggester_elastic_search","sample_network_conn_type","swp_enterprise_contact_form","site_proxima_australia_update","viewscreen_sandbox","issues_react_create_milestone","issues_react_cache_fix_workaround","lifecycle_label_name_updates","item_picker_new_select_panel","copilot_task_oriented_assistive_prompts","issue_types_prevent_private_type_creation","issues_react_grouped_diff_on_edit_history","issues_react_bypass_template_selection","refresh_image_video_src","react_router_dispose_on_disconnect","codespaces_prebuild_region_target_update","turbo_app_id_restore","use_paginated_org_picker_cost_center_form","copilot_code_review_sign_up_closed","use_paginated_repo_picker_cost_center_form"],"login":"frogcjn"}</script>
+  <script crossorigin="anonymous" defer="defer" type="application/javascript" src="https://github.githubassets.com/assets/wp-runtime-f8247267f0ba.js"></script>
+  <script crossorigin="anonymous" defer="defer" type="application/javascript" src="https://github.githubassets.com/assets/vendors-node_modules_oddbird_popover-polyfill_dist_popover_js-9da652f58479.js"></script>
+  <script crossorigin="anonymous" defer="defer" type="application/javascript" src="https://github.githubassets.com/assets/vendors-node_modules_github_arianotify-polyfill_ariaNotify-polyfill_js-node_modules_github_mi-3abb8f-46b9f4874d95.js"></script>
+  <script crossorigin="anonymous" defer="defer" type="application/javascript" src="https://github.githubassets.com/assets/ui_packages_failbot_failbot_ts-952d624642a1.js"></script>
+  <script crossorigin="anonymous" defer="defer" type="application/javascript" src="https://github.githubassets.com/assets/environment-f04cb2a9fc8c.js"></script>
+  <script crossorigin="anonymous" defer="defer" type="application/javascript" src="https://github.githubassets.com/assets/vendors-node_modules_primer_behaviors_dist_esm_index_mjs-0dbb79f97f8f.js"></script>
+  <script crossorigin="anonymous" defer="defer" type="application/javascript" src="https://github.githubassets.com/assets/vendors-node_modules_github_selector-observer_dist_index_esm_js-f690fd9ae3d5.js"></script>
+  <script crossorigin="anonymous" defer="defer" type="application/javascript" src="https://github.githubassets.com/assets/vendors-node_modules_github_relative-time-element_dist_index_js-62d275b7ddd9.js"></script>
+  <script crossorigin="anonymous" defer="defer" type="application/javascript" src="https://github.githubassets.com/assets/vendors-node_modules_github_text-expander-element_dist_index_js-78748950cb0c.js"></script>
+  <script crossorigin="anonymous" defer="defer" type="application/javascript" src="https://github.githubassets.com/assets/vendors-node_modules_github_auto-complete-element_dist_index_js-node_modules_github_catalyst_-8e9f78-a90ac05d2469.js"></script>
+  <script crossorigin="anonymous" defer="defer" type="application/javascript" src="https://github.githubassets.com/assets/vendors-node_modules_github_filter-input-element_dist_index_js-node_modules_github_remote-inp-b5f1d7-a1760ffda83d.js"></script>
+  <script crossorigin="anonymous" defer="defer" type="application/javascript" src="https://github.githubassets.com/assets/vendors-node_modules_github_markdown-toolbar-element_dist_index_js-ceef33f593fa.js"></script>
+  <script crossorigin="anonymous" defer="defer" type="application/javascript" src="https://github.githubassets.com/assets/vendors-node_modules_github_file-attachment-element_dist_index_js-node_modules_primer_view-co-c44a69-efa32db3a345.js"></script>
+  <script crossorigin="anonymous" defer="defer" type="application/javascript" src="https://github.githubassets.com/assets/github-elements-394f8eb34f19.js"></script>
+  <script crossorigin="anonymous" defer="defer" type="application/javascript" src="https://github.githubassets.com/assets/element-registry-0fd720babc23.js"></script>
+  <script crossorigin="anonymous" defer="defer" type="application/javascript" src="https://github.githubassets.com/assets/vendors-node_modules_braintree_browser-detection_dist_browser-detection_js-node_modules_githu-2906d7-2a07a295af40.js"></script>
+  <script crossorigin="anonymous" defer="defer" type="application/javascript" src="https://github.githubassets.com/assets/vendors-node_modules_lit-html_lit-html_js-be8cb88f481b.js"></script>
+  <script crossorigin="anonymous" defer="defer" type="application/javascript" src="https://github.githubassets.com/assets/vendors-node_modules_github_mini-throttle_dist_index_js-node_modules_morphdom_dist_morphdom-e-7c534c-a4a1922eb55f.js"></script>
+  <script crossorigin="anonymous" defer="defer" type="application/javascript" src="https://github.githubassets.com/assets/vendors-node_modules_github_turbo_dist_turbo_es2017-esm_js-a03ee12d659a.js"></script>
+  <script crossorigin="anonymous" defer="defer" type="application/javascript" src="https://github.githubassets.com/assets/vendors-node_modules_github_remote-form_dist_index_js-node_modules_delegated-events_dist_inde-893f9f-b6294cf703b7.js"></script>
+  <script crossorigin="anonymous" defer="defer" type="application/javascript" src="https://github.githubassets.com/assets/vendors-node_modules_color-convert_index_js-e3180fe3bcb3.js"></script>
+  <script crossorigin="anonymous" defer="defer" type="application/javascript" src="https://github.githubassets.com/assets/vendors-node_modules_github_quote-selection_dist_index_js-node_modules_github_session-resume_-947061-e7a6c4a19f98.js"></script>
+  <script crossorigin="anonymous" defer="defer" type="application/javascript" src="https://github.githubassets.com/assets/ui_packages_updatable-content_updatable-content_ts-62f3e9c52ece.js"></script>
+  <script crossorigin="anonymous" defer="defer" type="application/javascript" src="https://github.githubassets.com/assets/app_assets_modules_github_behaviors_task-list_ts-app_assets_modules_github_sso_ts-ui_packages-900dde-768abe60b1f8.js"></script>
+  <script crossorigin="anonymous" defer="defer" type="application/javascript" src="https://github.githubassets.com/assets/app_assets_modules_github_sticky-scroll-into-view_ts-3e000c5d31a9.js"></script>
+  <script crossorigin="anonymous" defer="defer" type="application/javascript" src="https://github.githubassets.com/assets/app_assets_modules_github_behaviors_ajax-error_ts-app_assets_modules_github_behaviors_include-87a4ae-eda74b9de9cd.js"></script>
+  <script crossorigin="anonymous" defer="defer" type="application/javascript" src="https://github.githubassets.com/assets/app_assets_modules_github_behaviors_commenting_edit_ts-app_assets_modules_github_behaviors_ht-83c235-e429cff6ceb1.js"></script>
+  <script crossorigin="anonymous" defer="defer" type="application/javascript" src="https://github.githubassets.com/assets/behaviors-c92ce7c6a557.js"></script>
+  <script crossorigin="anonymous" defer="defer" type="application/javascript" src="https://github.githubassets.com/assets/vendors-node_modules_delegated-events_dist_index_js-node_modules_github_catalyst_lib_index_js-f6223d90c7ba.js"></script>
+  <script crossorigin="anonymous" defer="defer" type="application/javascript" src="https://github.githubassets.com/assets/notifications-global-01e85cd1be94.js"></script>
+  <script crossorigin="anonymous" defer="defer" type="application/javascript" src="https://github.githubassets.com/assets/vendors-node_modules_virtualized-list_es_index_js-node_modules_github_template-parts_lib_index_js-94dc7a2157c1.js"></script>
+  <script crossorigin="anonymous" defer="defer" type="application/javascript" src="https://github.githubassets.com/assets/vendors-node_modules_github_remote-form_dist_index_js-node_modules_delegated-events_dist_inde-70450e-4b93df70b903.js"></script>
+  <script crossorigin="anonymous" defer="defer" type="application/javascript" src="https://github.githubassets.com/assets/app_assets_modules_github_ref-selector_ts-52913063a0b9.js"></script>
+  <script crossorigin="anonymous" defer="defer" type="application/javascript" src="https://github.githubassets.com/assets/codespaces-b419a25ee02f.js"></script>
+  <script crossorigin="anonymous" defer="defer" type="application/javascript" src="https://github.githubassets.com/assets/vendors-node_modules_github_filter-input-element_dist_index_js-node_modules_github_remote-inp-3eebbd-0763620ad7bf.js"></script>
+  <script crossorigin="anonymous" defer="defer" type="application/javascript" src="https://github.githubassets.com/assets/vendors-node_modules_github_mini-throttle_dist_decorators_js-node_modules_delegated-events_di-e161aa-9d41fb1b6c9e.js"></script>
+  <script crossorigin="anonymous" defer="defer" type="application/javascript" src="https://github.githubassets.com/assets/vendors-node_modules_github_file-attachment-element_dist_index_js-node_modules_github_remote--3c9c82-b71ef90fbdc7.js"></script>
+  <script crossorigin="anonymous" defer="defer" type="application/javascript" src="https://github.githubassets.com/assets/repositories-10217e4e5a53.js"></script>
+  <script crossorigin="anonymous" defer="defer" type="application/javascript" src="https://github.githubassets.com/assets/vendors-node_modules_github_mini-throttle_dist_index_js-node_modules_github_catalyst_lib_inde-dbbea9-26cce2010167.js"></script>
+  <script crossorigin="anonymous" defer="defer" type="application/javascript" src="https://github.githubassets.com/assets/code-menu-d6d3c94ee97e.js"></script>
+
+  <link crossorigin="anonymous" media="all" rel="stylesheet" href="https://github.githubassets.com/assets/primer-react.8748b7127eb5f3cfb5ac.module.css"/>
+  <link crossorigin="anonymous" media="all" rel="stylesheet" href="https://github.githubassets.com/assets/notifications-subscriptions-menu.1bcff9205c241e99cff2.module.css"/>
+
+  <title>Anjiang-Wei/CodeARC</title>
+
+  <meta name="route-pattern" content="/:user_id/:repository" data-turbo-transient>
+  <meta name="route-controller" content="files" data-turbo-transient>
+  <meta name="route-action" content="disambiguate" data-turbo-transient>
+
+  <meta name="current-catalog-service-hash" content="f3abb0cc802f3d7b95fc8762b94bdcb13bf39634c40c357301c4aa1d67a256fb">
+
+  <meta name="request-id" content="E2DE:1FC57D:47A192C:4A6E818:67EDB904" data-turbo-transient="true"/>
+  <meta name="html-safe-nonce" content="cfdaebc5e611f55fbd1deaf98938b9457d1793fbfc40bf15200ef65be19ef28a" data-turbo-transient="true"/>
+  <meta name="visitor-payload" content="eyJyZWZlcnJlciI6bnVsbCwicmVxdWVzdF9pZCI6IkUyREU6MUZDNTdEOjQ3QTE5MkM6NEE2RTgxODo2N0VEQjkwNCIsInZpc2l0b3JfaWQiOiIzMjc3NTc0ODQzMzQxOTAyNTU0IiwicmVnaW9uX2VkZ2UiOiJzZWEiLCJyZWdpb25fcmVuZGVyIjoiaWFkIn0=" data-turbo-transient="true"/>
+  <meta name="visitor-hmac" content="ea3040e7c33b00e2ea96920c2a14c342f89f9cd5b74c7412ad7705a49957e137" data-turbo-transient="true"/>
+
+  <meta name="hovercard-subject-tag" content="repository:945652024" data-turbo-transient>
+
+  <meta name="github-keyboard-shortcuts" content="repository,copilot" data-turbo-transient="true"/>
+
+  <meta name="selected-link" value="repo_source" data-turbo-transient>
+  <link rel="assets" href="https://github.githubassets.com/">
+
+  <meta name="google-site-verification" content="Apib7-x98H0j5cPqHWwSMm6dNU4GmODRoqxLiDzdx9I">
+
+  <meta name="octolytics-url" content="https://collector.github.com/github/collect"/>
+  <meta name="octolytics-actor-id" content="1777562"/>
+  <meta name="octolytics-actor-login" content="frogcjn"/>
+  <meta name="octolytics-actor-hash" content="9701183a2805cc20e7cbaf982d05254b251ffcffb1fb02461be6aba22122bc45"/>
+
+  <meta name="analytics-location" content="/&lt;user-name&gt;/&lt;repo-name&gt;" data-turbo-transient="true"/>
+
+  <meta name="user-login" content="frogcjn">
+
+  <link rel="sudo-modal" href="/sessions/sudo_modal">
+
+  <meta name="viewport" content="width=device-width">
+
+  <meta name="description" content="Contribute to Anjiang-Wei/CodeARC development by creating an account on GitHub.">
+
+  <link rel="search" type="application/opensearchdescription+xml" href="/opensearch.xml" title="GitHub">
+
+  <link rel="fluid-icon" href="https://github.com/fluidicon.png" title="GitHub">
+  <meta property="fb:app_id" content="1401488693436528">
+  <meta name="apple-itunes-app" content="app-id=1477376905, app-argument=https://github.com/Anjiang-Wei/CodeARC"/>
+
+  <meta name="twitter:image" content="https://opengraph.githubassets.com/3acb53ed0cffae12347b520547b5566a7916fea66eb3b4a4630505ee002334db/Anjiang-Wei/CodeARC"/>
+  <meta name="twitter:site" content="@github"/>
+  <meta name="twitter:card" content="summary_large_image"/>
+  <meta name="twitter:title" content="Anjiang-Wei/CodeARC"/>
+  <meta name="twitter:description" content="Contribute to Anjiang-Wei/CodeARC development by creating an account on GitHub."/>
+  <meta property="og:image" content="https://opengraph.githubassets.com/3acb53ed0cffae12347b520547b5566a7916fea66eb3b4a4630505ee002334db/Anjiang-Wei/CodeARC"/>
+  <meta property="og:image:alt" content="Contribute to Anjiang-Wei/CodeARC development by creating an account on GitHub."/>
+  <meta property="og:image:width" content="1200"/>
+  <meta property="og:image:height" content="600"/>
+  <meta property="og:site_name" content="GitHub"/>
+  <meta property="og:type" content="object"/>
+  <meta property="og:title" content="Anjiang-Wei/CodeARC"/>
+  <meta property="og:url" content="https://github.com/Anjiang-Wei/CodeARC"/>
+  <meta property="og:description" content="Contribute to Anjiang-Wei/CodeARC development by creating an account on GitHub."/>
+
+  <link rel="shared-web-socket" href="wss://alive.github.com/_sockets/u/1777562/ws?session=eyJ2IjoiVjMiLCJ1IjoxNzc3NTYyLCJzIjoxNDg0NjI3MjgwLCJjIjoxNzcyMDAwNzUzLCJ0IjoxNzQzNjMyNjQ1fQ==--1f3df6dde1fa67a7196a3184afed7cf55fa0b57f3ff9064183f32889703b02e6" data-refresh-url="/_alive" data-session-id="8b6c048aa4f1870d0cbe4481bddccf852fd21aaf5b862f02a563ef937fccea5f">
+  <link rel="shared-web-socket-src" href="/assets-cdn/worker/socket-worker-eff89a71ae86.js">
+
+  <meta name="hostname" content="github.com">
+
+  <meta name="keyboard-shortcuts-preference" content="all">
+  <meta name="hovercards-preference" content="true">
+  <meta name="announcement-preference-hovercard" content="true">
+
+  <meta name="expected-hostname" content="github.com">
+
+  <meta http-equiv="x-pjax-version" content="c65893d39daaef16d92b9f4cc4b07246a69887b2b5063e30afe892b5f3035eaa" data-turbo-track="reload">
+  <meta http-equiv="x-pjax-csp-version" content="e26f9f0ba624ee85cc7ac057d8faa8618a4f25a85eab052c33d018ac0f6b1a46" data-turbo-track="reload">
+  <meta http-equiv="x-pjax-css-version" content="3880f621a6450d86227686dafe66b79bb840ae1d588507e3f013719db633d34a" data-turbo-track="reload">
+  <meta http-equiv="x-pjax-js-version" content="e72c3b0d1bf65084fdb02e5617345ac46f328a7a1c52f4ba57ac2541e522f6ab" data-turbo-track="reload">
+
+  <meta name="turbo-cache-control" content="no-preview" data-turbo-transient="">
+
+  <meta data-hydrostats="publish">
+  <meta name="go-import" content="github.com/Anjiang-Wei/CodeARC git https://github.com/Anjiang-Wei/CodeARC.git">
+
+  <meta name="octolytics-dimension-user_id" content="43546559"/>
+  <meta name="octolytics-dimension-user_login" content="Anjiang-Wei"/>
+  <meta name="octolytics-dimension-repository_id" content="945652024"/>
+  <meta name="octolytics-dimension-repository_nwo" content="Anjiang-Wei/CodeARC"/>
+  <meta name="octolytics-dimension-repository_public" content="true"/>
+  <meta name="octolytics-dimension-repository_is_fork" content="false"/>
+  <meta name="octolytics-dimension-repository_network_root_id" content="945652024"/>
+  <meta name="octolytics-dimension-repository_network_root_nwo" content="Anjiang-Wei/CodeARC"/>
+
+  <link rel="canonical" href="https://github.com/Anjiang-Wei/CodeARC" data-turbo-transient>
+
+  <meta name="turbo-body-classes" content="logged-in env-production page-responsive">
+
+  <meta name="browser-stats-url" content="https://api.github.com/_private/browser/stats">
+
+  <meta name="browser-errors-url" content="https://api.github.com/_private/browser/errors">
+
+  <meta name="release" content="174f29960ccae35d5e7eecb6ba2877df867a1c43">
+
+  <link rel="mask-icon" href="https://github.githubassets.com/assets/pinned-octocat-093da3e6fa40.svg" color="#000000">
+  <link rel="alternate icon" class="js-site-favicon" type="image/png" href="https://github.githubassets.com/favicons/favicon.png">
+  <link rel="icon" class="js-site-favicon" type="image/svg+xml" href="https://github.githubassets.com/favicons/favicon.svg" data-base-href="https://github.githubassets.com/favicons/favicon">
+
+  <meta name="theme-color" content="#1e2327">
+  <meta name="color-scheme" content="light dark"/>
+
+  <link rel="apple-touch-icon" href="https://github.githubassets.com/assets/apple-touch-icon-92bd46d04241.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="https://github.githubassets.com/assets/apple-touch-icon-180x180-a80b8e11abe2.png">
+  <meta name="apple-mobile-web-app-title" content="GitHub">
+
+  <link rel="manifest" href="/manifest.json" crossOrigin="use-credentials">
+  <style id="ms-consent-banner-main-styles">.w8hcgFksdo30C8w-bygqu{color:#000}.ydkKdaztSS0AeHWIeIHsQ a{color:#0067B8}.erL690_8JwUW-R4bJRcfl{background-color:#EBEBEB;color:#000}.erL690_8JwUW-R4bJRcfl:enabled:hover{color:#000;background-color:#DBDBDB;box-shadow:0px 4px 10px rgba(0,0,0,0.25);}.erL690_8JwUW-R4bJRcfl:enabled:focus{background-color:#DBDBDB;box-shadow:0px 4px 10px rgba(0,0,0,0.25);border:2px solid #000}.erL690_8JwUW-R4bJRcfl:disabled{opacity:1;color:rgba(0,0,0,0.2);background-color:rgba(0,0,0,0.2);}._1zNQOqxpBFSokeCLGi_hGr{background-color:#0067B8;color:#fff}._1zNQOqxpBFSokeCLGi_hGr:enabled:hover{color:#fff;background-color:#0067B8;box-shadow:0px 4px 10px rgba(0,0,0,0.25);}._1zNQOqxpBFSokeCLGi_hGr:enabled:focus{background-color:#0067B8;box-shadow:0px 4px 10px rgba(0,0,0,0.25);border:2px solid #000}._1zNQOqxpBFSokeCLGi_hGr:disabled{opacity:1;color:rgba(0,0,0,0.2);background-color:rgba(0,120,215,0.2);}._23tra1HsiiP6cT-Cka-ycB{position:relative;display:flex;z-index:9999;width:100%;background-color:#F2F2F2;justify-content:space-between;text-align:left}div[dir="rtl"]._23tra1HsiiP6cT-Cka-ycB{text-align:right}._1Upc2NjY8AlDn177YoVj0y{margin:0;padding-left:5%;padding-top:8px;padding-bottom:8px}div[dir="rtl"] ._1Upc2NjY8AlDn177YoVj0y{margin:0;padding:8px 5% 8px 0;float:none}._23tra1HsiiP6cT-Cka-ycB svg{fill:none;max-width:none;max-height:none}._1V_hlU-7jdtPiooHMu89BB{display:table-cell;padding:12px;width:24px;height:24px;font-family:Segoe UI, SegoeUI, Arial, sans-serif;font-style:normal;font-weight:normal;font-size:24px;line-height:0}.f6QKJD7fhSbnJLarTL-W-{display:table-cell;vertical-align:middle;padding:0;font-family:Segoe UI, SegoeUI, Arial, sans-serif;font-style:normal;font-weight:normal;font-size:13px;line-height:16px}.f6QKJD7fhSbnJLarTL-W- a{text-decoration:underline}._2j0fmugLb1FgYz6KPuB91w{display:inline-block;margin-left:5%;margin-right:5%;min-width:40%;min-width:calc((150px + 3 * 4px) * 2 + 150px);min-width:-webkit-fit-content;min-width:-moz-fit-content;min-width:fit-content;align-self:center;position:relative}._1XuCi2WhiqeWRUVp3pnFG3{margin:4px;padding:5px;min-width:150px;min-height:36px;vertical-align:top;cursor:pointer;font-family:Segoe UI, SegoeUI, Arial, sans-serif;font-style:normal;font-weight:normal;font-size:15px;line-height:20px;text-align:center}._1XuCi2WhiqeWRUVp3pnFG3:focus{box-sizing:border-box}._1XuCi2WhiqeWRUVp3pnFG3:disabled{cursor:not-allowed}._2bvsb3ubApyZ0UGoQA9O9T{display:block;position:fixed;z-index:10000;top:0;left:0;width:100%;height:100%;background-color:rgba(255,255,255,0.6);overflow:auto;text-align:left}div[dir="rtl"]._2bvsb3ubApyZ0UGoQA9O9T{text-align:right}div[dir="rtl"] ._2bvsb3ubApyZ0UGoQA9O9T{left:auto;right:0}.AFsJE948muYyzCMktdzuk{position:relative;top:8%;margin-bottom:40px;margin-left:auto;margin-right:auto;box-sizing:border-box;width:640px;background-color:#fff;border:1px solid #0067B8}._3kWyBRbW_dgnMiEyx06Fu4{float:right;z-index:1;margin:2px;padding:12px;cursor:pointer;font-family:Segoe UI, SegoeUI, Arial, sans-serif;font-style:normal;font-weight:normal;font-size:13px;line-height:13px;display:flex;align-items:center;text-align:center;color:#666;background-color:#fff}div[dir="rtl"] ._3kWyBRbW_dgnMiEyx06Fu4{margin:2px;padding:12px;float:left}.uCYvKvHXrhjNgflv1VqdD{position:static;margin-top:36px;margin-left:36px;margin-right:36px}._17pX1m9O_W--iZbDt3Ta5r{margin-top:0;margin-bottom:12px;font-family:Segoe UI, SegoeUI, Arial, sans-serif;font-style:normal;font-weight:600;font-size:20px;line-height:24px;text-transform:none}._1kBkHQ1V1wu3kl-YcLgUr6{height:446px;overflow:auto}._20_nXDf6uFs9Q6wxRXG-I-{margin-top:0;font-family:Segoe UI, SegoeUI, Arial, sans-serif;font-style:normal;font-weight:normal;font-size:15px;line-height:20px}._20_nXDf6uFs9Q6wxRXG-I- a{text-decoration:underline}dl._2a0NH_GDQEQe5Ynfo7suVH{margin-top:36px;margin-bottom:0;padding:0;list-style:none;text-transform:none}dt._3j_LCPv7fyXv3A8FIXVwZ4{margin-top:20px;float:none;font-family:Segoe UI, SegoeUI, Arial, sans-serif;font-style:normal;font-weight:600;font-size:18px;line-height:24px;list-style:none}.k-vxTGFbdq1aOZB2HHpjh{margin:0;padding:0;}._2Bucyy75c_ogoU1g-liB5R{margin:0;padding:0;border-bottom:none;font-family:Segoe UI, SegoeUI, Arial, sans-serif;font-style:normal;font-weight:600;font-size:18px;line-height:24px;text-transform:none}._63gwfzV8dclrsl2cfd90r{display:inline-block;margin-top:0;margin-bottom:13px;font-family:Segoe UI, SegoeUI, Arial, sans-serif;font-style:normal;font-weight:normal;font-size:15px;line-height:20px}._1l8wM_4mRYGz3Iu7l3BZR7{display:block}._2UE03QS02aZGkslegN_F-i{display:inline-block;position:relative;left:5px;margin-bottom:13px;margin-right:34px;padding:3px}div[dir="rtl"] ._2UE03QS02aZGkslegN_F-i{margin:0 0 13px 34px;padding:3px;float:none}div[dir="rtl"] ._2UE03QS02aZGkslegN_F-i{left:auto;right:5px}._23tra1HsiiP6cT-Cka-ycB *::before,._2bvsb3ubApyZ0UGoQA9O9T *::before,._23tra1HsiiP6cT-Cka-ycB *::after,._2bvsb3ubApyZ0UGoQA9O9T *::after{box-sizing:inherit}._1HSFn0HzGo6w4ADApV8-c4{outline:2px solid rgba(0,0,0,0.8)}input[type="radio"]._1dp8Vp5m3HwAqGx8qBmFV2{display:inline-block;position:relative;margin-top:0;margin-left:0;margin-right:0;height:0;width:0;border-radius:0;cursor:pointer;outline:none;box-sizing:border-box;-webkit-appearance:none;-moz-appearance:none;appearance:none}input[type="radio"]._1dp8Vp5m3HwAqGx8qBmFV2+label::before{display:block;position:absolute;top:5px;left:3px;height:19px;width:19px;content:"";border-radius:50%;border:1px solid #000;background-color:#fff}div[dir="rtl"] input[type="radio"]._1dp8Vp5m3HwAqGx8qBmFV2+label::before{left:auto;right:3px}input[type="radio"]._1dp8Vp5m3HwAqGx8qBmFV2:not(:disabled)+label:hover::before{border:1px solid #0067B8}input[type="radio"]._1dp8Vp5m3HwAqGx8qBmFV2:not(:disabled)+label:hover::after{display:block;position:absolute;top:10px;left:8px;height:9px;width:9px;content:"";border-radius:50%;background-color:rgba(0,0,0,0.8)}div[dir="rtl"] input[type="radio"]._1dp8Vp5m3HwAqGx8qBmFV2:not(:disabled)+label:hover::after{left:auto;right:8px}input[type="radio"]._1dp8Vp5m3HwAqGx8qBmFV2:not(:disabled)+label:focus::before{border:1px solid #0067B8}input[type="radio"]._1dp8Vp5m3HwAqGx8qBmFV2:not(:disabled)+label:focus::after{display:block;position:absolute;top:10px;left:8px;height:9px;width:9px;content:"";border-radius:50%;background-color:#000}div[dir="rtl"] input[type="radio"]._1dp8Vp5m3HwAqGx8qBmFV2:not(:disabled)+label:focus::after{left:auto;right:8px}input[type="radio"]._1dp8Vp5m3HwAqGx8qBmFV2:checked+label::after{display:block;position:absolute;top:10px;left:8px;height:9px;width:9px;content:"";border-radius:50%;background-color:#000}div[dir="rtl"] input[type="radio"]._1dp8Vp5m3HwAqGx8qBmFV2:checked+label::after{left:auto;right:8px}input[type="radio"]._1dp8Vp5m3HwAqGx8qBmFV2:disabled+label{cursor:not-allowed}input[type="radio"]._1dp8Vp5m3HwAqGx8qBmFV2:disabled+label::before{border:1px solid rgba(0,0,0,0.2);background-color:rgba(0,0,0,0.2);}._3RJzeL3l9Rl_lAQEm6VwdX{display:block;position:static;float:right;margin-top:0;margin-bottom:0;margin-left:19px;margin-right:0;padding-top:0;padding-bottom:0;padding-left:8px;padding-right:0;width:80%;width:calc(100% - 19px);font-family:Segoe UI, SegoeUI, Arial, sans-serif;font-style:normal;font-weight:normal;font-size:15px;line-height:20px;text-transform:none;cursor:pointer;box-sizing:border-box}div[dir="rtl"] ._3RJzeL3l9Rl_lAQEm6VwdX{margin:0 19px 0 0;padding:0 8px 0 0;float:left}.nohp3sIG12ZBhzcMnPala{margin-top:20px;margin-bottom:48px}._2uhaEsmeotZ3P-M0AXo2kF{padding:0;width:278px;height:36px;cursor:pointer;font-family:Segoe UI, SegoeUI, Arial, sans-serif;font-style:normal;font-weight:normal;font-size:15px;line-height:20px;text-align:center}._2uhaEsmeotZ3P-M0AXo2kF:focus{box-sizing:border-box}._2uhaEsmeotZ3P-M0AXo2kF:disabled{cursor:not-allowed}._3tOu1FJ59c_xz_PmI1lKV5{float:right;padding:0;width:278px;height:36px;cursor:pointer;font-family:Segoe UI, SegoeUI, Arial, sans-serif;font-style:normal;font-weight:normal;font-size:15px;line-height:20px;text-align:center}._3tOu1FJ59c_xz_PmI1lKV5:focus{box-sizing:border-box}._3tOu1FJ59c_xz_PmI1lKV5:disabled{cursor:not-allowed}div[dir="rtl"] ._3tOu1FJ59c_xz_PmI1lKV5{margin:0;padding:0;float:left}@media only screen and (max-width: 768px){._2j0fmugLb1FgYz6KPuB91w,._1Upc2NjY8AlDn177YoVj0y{padding-top:8px;padding-bottom:12px;padding-left:3.75%;padding-right:3.75%;margin:0;width:92.5%}._23tra1HsiiP6cT-Cka-ycB{display:block}._1XuCi2WhiqeWRUVp3pnFG3{margin-bottom:8px;margin-left:0;margin-right:0;width:100%}._2bvsb3ubApyZ0UGoQA9O9T{overflow:hidden}.AFsJE948muYyzCMktdzuk{top:1.8%;width:93.33%;height:96.4%;overflow:hidden}.uCYvKvHXrhjNgflv1VqdD{margin-top:24px;margin-left:24px;margin-right:24px;height:100%}._1kBkHQ1V1wu3kl-YcLgUr6{height:62%;height:calc(100% - 188px);min-height:50%}._2uhaEsmeotZ3P-M0AXo2kF{width:100%}._3tOu1FJ59c_xz_PmI1lKV5{margin-bottom:12px;margin-left:0;width:100%}div[dir="rtl"] ._3tOu1FJ59c_xz_PmI1lKV5{margin:0 0 12px 0;padding:0;float:none}}@media only screen and (max-width: 768px) and (orientation: landscape), only screen and (max-height: 260px), only screen and (max-width: 340px){.AFsJE948muYyzCMktdzuk{overflow:auto}}@media only screen and (max-height: 260px), only screen and (max-width: 340px){._1XuCi2WhiqeWRUVp3pnFG3{min-width:0}._3kWyBRbW_dgnMiEyx06Fu4{padding:3%}.uCYvKvHXrhjNgflv1VqdD{margin-top:3%;margin-left:3%;margin-right:3%}._17pX1m9O_W--iZbDt3Ta5r{margin-bottom:3%}._1kBkHQ1V1wu3kl-YcLgUr6{height:calc(79% - 64px)}.nohp3sIG12ZBhzcMnPala{margin-top:5%;margin-bottom:10%}._3tOu1FJ59c_xz_PmI1lKV5{margin-bottom:3%}div[dir="rtl"] ._3tOu1FJ59c_xz_PmI1lKV5{margin:0 0 3% 0;padding:0;float:none}}
+</style>
+<style type="text/css" id="ms-consent-banner-theme-styles">._23tra1HsiiP6cT-Cka-ycB {
+            background-color: #24292f !important;
+        }.w8hcgFksdo30C8w-bygqu {
+            color: #ffffff !important;
+        }.ydkKdaztSS0AeHWIeIHsQ a {
+            color: #d8b9ff !important;
+        }._2bvsb3ubApyZ0UGoQA9O9T {
+            background-color: rgba(23, 23, 23, 0.8) !important;
+        }.AFsJE948muYyzCMktdzuk {
+            background-color: #24292f !important;
+            border: 1px solid #d8b9ff !important;
+        }._3kWyBRbW_dgnMiEyx06Fu4 {
+            color: #d8b9ff !important;
+            background-color: #24292f !important;
+        }._1zNQOqxpBFSokeCLGi_hGr {
+            border: 1px solid #ffffff !important;
+            background-color: #ffffff !important;
+            color: #1f2328 !important;
+        }._1zNQOqxpBFSokeCLGi_hGr:enabled:hover {
+            color: #1f2328 !important;
+            background-color: #d8b9ff !important;
+            box-shadow: none !important;
+            border: 1px solid transparent !important;
+        }._1zNQOqxpBFSokeCLGi_hGr:enabled:focus {
+            background-color: #d8b9ff !important;
+            box-shadow: none !important;
+            border: 2px solid #ffffff !important;
+        }._1zNQOqxpBFSokeCLGi_hGr:disabled {
+            opacity: 0.5 !important;
+            color: #1f2328 !important;
+            background-color: #ffffff !important;
+            border: 1px solid transparent !important;
+        }.erL690_8JwUW-R4bJRcfl {
+            border: 1px solid #eaeef2 !important;
+            background-color: #32383f !important;
+            color: #ffffff !important;
+        }.erL690_8JwUW-R4bJRcfl:enabled:hover {
+            color: #ffffff !important;
+            background-color: #24292f !important;
+            box-shadow: none !important;
+            border: 1px solid #ffffff !important;
+        }.erL690_8JwUW-R4bJRcfl:enabled:focus {
+            background-color: #24292f !important;
+            box-shadow: none !important;
+            border: 2px solid #6e7781 !important;
+        }.erL690_8JwUW-R4bJRcfl:disabled {
+            opacity: 0.5 !important;
+            color: #ffffff !important;
+            background-color: #424a53 !important;
+            border: 1px solid #6e7781 !important;
+        }input[type="radio"]._1dp8Vp5m3HwAqGx8qBmFV2 + label::before {
+            border: 1px solid #d8b9ff !important;
+            background-color: #24292f !important;
+        }._1HSFn0HzGo6w4ADApV8-c4 {
+            outline: 2px solid #ffffff !important;
+        }input[type="radio"]._1dp8Vp5m3HwAqGx8qBmFV2:checked + label::after {
+            background-color: #d8b9ff !important;
+        }input[type="radio"]._1dp8Vp5m3HwAqGx8qBmFV2 + label:hover::before {
+            border: 1px solid #ffffff !important;
+        }input[type="radio"]._1dp8Vp5m3HwAqGx8qBmFV2 + label:hover::after {
+            background-color: #ffffff !important;
+        }input[type="radio"]._1dp8Vp5m3HwAqGx8qBmFV2 + label:focus::before {
+            border: 1px solid #ffffff !important;
+        }input[type="radio"]._1dp8Vp5m3HwAqGx8qBmFV2 + label:focus::after {
+            background-color: #d8b9ff !important;
+        }input[type="radio"]._1dp8Vp5m3HwAqGx8qBmFV2:disabled + label::before {
+            border: 1px solid rgba(227, 227, 227, 0.2) !important;
+            background-color: rgba(227, 227, 227, 0.2) !important;
+        }</style>
+<style data-styled="active" data-styled-version="5.3.11"></style>
+</head>
+<body>
+
+<section class="hero space-background has-text-white">
+  <div class="hero-body space-background-overlay">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered">
+        <div class="column has-text-centered">
+          <h1 class="title is-2 publication-title has-text-black">CodeARC: Benchmarking Reasoning Capabilities of LLM Agents for Inductive Program Synthesis</h1>
+          <h1 class="title is-4 publication-title has-text-black">arXiv:2503.23145</h1>
+          <div class="is-size-5 publication-authors">
+            <span class="author-block">
+              Anjiang Wei\(^{1}\),
+            </span>
+            <span class="author-block">
+              Tarun Suresh\(^{2}\),
+            </span>
+            <span class="author-block">
+              Jiannan Cao\(^{3}\),
+            </span>
+            <span class="author-block">
+              Naveen Kannan\(^{1}\),
+            </span>
+            <span class="author-block">
+              Yuheng Wu\(^{1}\),
+            </span>
+            <span class="author-block">
+              Kai Yan\(^{2}\),
+            </span>
+            <span class="author-block">
+              Thiago S. F. X. Teixeira\(^{4}\),
+            </span>
+            <span class="author-block">
+              Ke Wang\(^{5}\),
+            </span>
+            <span class="author-block">
+              Alex Aiken\(^{1}\)
+            </span>
+          </div>
+
+          <div class="is-size-6 publication-authors">
+            <span class="author-block">\(^1\)Stanford University</span>
+            <span class="author-block">\(^2\)University of Illinois Urbana-Champaign</span>
+            <span class="author-block">\(^3\)MIT</span>
+            <span class="author-block">\(^4\)Intel</span>
+            <span class="author-block">\(^5\)Visa Research</span>
+          </div>
+
+          <div class="column has-text-centered">
+            <div class="publication-links">
+              <span class="link-block">
+                <a href="https://arxiv.org/abs/2503.23145" target="_blank" class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="ai ai-arxiv"></i>
+                  </span>
+                  <span>arXiv</span>
+                </a>
+              </span>
+              <!-- Code Link. -->
+              <span class="link-block">
+                <a href="https://github.com/Anjiang-Wei/CodeARC" target="_blank" class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="fab fa-github"></i>
+                  </span>
+                  <span>Code</span>
+                  </a>
+              </span>
+              <span class="link-block">
+                <a href="https://huggingface.co/datasets/anjiangwei/CodeARC-Problems" target="_blank" class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                    🤗
+                  </span>
+                  <span>Dataset</span>
+                  </a>
+              </span>
+              <span class="link-block">
+                <a href="https://huggingface.co/LLM4Code/CodeARC_annotated_llama3.1" target="_blank" class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                    🤗
+                  </span>
+                  <span>Model</span>
+                </a>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<section class="section">
+  <div class="container is-max-desktop">
+    <!-- B -->
+    <div class="columns is-centered">
+      <div class="column is-full-width">
+        <div class="column has-text-centered">
+          <h2 class="title is-3">Abstract</h2>
+          <div class="content has-text-justified" style="font-size: 1.25em;">
+            <p>
+              Inductive program synthesis, or programming by example, requires synthesizing functions from input-output examples that generalize to unseen inputs. While large language model agents have shown promise in programming tasks guided by natural language, their ability to perform inductive program synthesis is underexplored. Existing evaluation protocols rely on static sets of examples and held-out tests, offering no feedback when synthesized functions are incorrect and failing to reflect real-world scenarios such as reverse engineering. We propose CodeARC, the Code Abstraction and Reasoning Challenge, a new evaluation framework where agents interact with a hidden target function by querying it with new inputs, synthesizing candidate functions, and iteratively refining their solutions using a differential testing oracle. This interactive setting encourages agents to perform function calls and self-correction based on feedback. We construct the first large-scale benchmark for general-purpose inductive program synthesis, featuring 1114 functions. Among 18 models evaluated, o3-mini performs best with a success rate of 52.7%, highlighting the difficulty of this task. Fine-tuning LLaMA-3.1-8B-Instruct on curated synthesis traces yields up to a 31% relative performance gain. CodeARC provides a more realistic and challenging testbed for evaluating LLM-based program synthesis and inductive reasoning.
+            </p>  
+          <br>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--/ B -->
+
+    <div class="columns is-centered">
+      <div class="column is-full-width">
+        <h2 class="title">Leaderboard</h2>
+        <div class="table-container">
+          <table class="table is-bordered is-striped is-narrow is-hoverable is-fullwidth">
+            <thead>
+              <tr>
+                <th rowspan="2" style="text-align: center; vertical-align: middle;">Model</th>
+                <th colspan="3" style="text-align: center; vertical-align: middle;">Annotated Dataset</th>
+                <th colspan="3" style="text-align: center; vertical-align: middle;">Anonymized Dataset</th>
+              </tr>
+              <tr>
+                <th style="text-align: center; vertical-align: middle;"># I/O</th>
+                <th style="text-align: center; vertical-align: middle;"># Oracle</th>
+                <th style="text-align: center; vertical-align: middle; background-color: rgba(0,0,0,0.05);">Success (%)</th>
+                <th style="text-align: center; vertical-align: middle;"># I/O</th>
+                <th style="text-align: center; vertical-align: middle;"># Oracle</th>
+                <th style="text-align: center; vertical-align: middle; background-color: rgba(0,0,0,0.1);">Success (%)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td style="text-align: center; vertical-align: middle;">Llama-3.2-3B</td>
+                <td style="text-align: center; vertical-align: middle;">28.3</td>
+                <td style="text-align: center; vertical-align: middle;">1.9</td>
+                <td style="text-align: center; vertical-align: middle; background-color: rgba(0,0,0,0.05);">11.0</td>
+                <td style="text-align: center; vertical-align: middle;">29.3</td>
+                <td style="text-align: center; vertical-align: middle;">2.0</td>
+                <td style="text-align: center; vertical-align: middle; background-color: rgba(0,0,0,0.1);">4.8</td>
+              </tr>
+              <tr>
+                <td style="text-align: center; vertical-align: middle;">Mixtral-8x7B</td>
+                <td style="text-align: center; vertical-align: middle;">27.4</td>
+                <td style="text-align: center; vertical-align: middle;">1.9</td>
+                <td style="text-align: center; vertical-align: middle; background-color: rgba(0,0,0,0.05);">20.3</td>
+                <td style="text-align: center; vertical-align: middle;">28.5</td>
+                <td style="text-align: center; vertical-align: middle;">1.9</td>
+                <td style="text-align: center; vertical-align: middle; background-color: rgba(0,0,0,0.1);">12.0</td>
+              </tr>
+              <tr>
+                <td style="text-align: center; vertical-align: middle;">Llama-3.1-8B</td>
+                <td style="text-align: center; vertical-align: middle;">28.0</td>
+                <td style="text-align: center; vertical-align: middle;">1.8</td>
+                <td style="text-align: center; vertical-align: middle; background-color: rgba(0,0,0,0.05);">19.3</td>
+                <td style="text-align: center; vertical-align: middle;">28.6</td>
+                <td style="text-align: center; vertical-align: middle;">1.9</td>
+                <td style="text-align: center; vertical-align: middle; background-color: rgba(0,0,0,0.1);">13.7</td>
+              </tr>
+              <tr>
+                <td style="text-align: center; vertical-align: middle;">Mixtral-8x22B</td>
+                <td style="text-align: center; vertical-align: middle;">26.7</td>
+                <td style="text-align: center; vertical-align: middle;">1.8</td>
+                <td style="text-align: center; vertical-align: middle; background-color: rgba(0,0,0,0.05);">25.1</td>
+                <td style="text-align: center; vertical-align: middle;">28.1</td>
+                <td style="text-align: center; vertical-align: middle;">1.9</td>
+                <td style="text-align: center; vertical-align: middle; background-color: rgba(0,0,0,0.1);">15.0</td>
+              </tr>
+              <tr>
+                <td style="text-align: center; vertical-align: middle;">QwQ-32B</td>
+                <td style="text-align: center; vertical-align: middle;">24.6</td>
+                <td style="text-align: center; vertical-align: middle;">1.8</td>
+                <td style="text-align: center; vertical-align: middle; background-color: rgba(0,0,0,0.05);">20.0</td>
+                <td style="text-align: center; vertical-align: middle;">25.7</td>
+                <td style="text-align: center; vertical-align: middle;">1.9</td>
+                <td style="text-align: center; vertical-align: middle; background-color: rgba(0,0,0,0.1);">15.4</td>
+              </tr>
+              <tr>
+                <td style="text-align: center; vertical-align: middle;">Qwen2.5-7B</td>
+                <td style="text-align: center; vertical-align: middle;">26.9</td>
+                <td style="text-align: center; vertical-align: middle;">1.8</td>
+                <td style="text-align: center; vertical-align: middle; background-color: rgba(0,0,0,0.05);">29.2</td>
+                <td style="text-align: center; vertical-align: middle;">28.3</td>
+                <td style="text-align: center; vertical-align: middle;">1.9</td>
+                <td style="text-align: center; vertical-align: middle; background-color: rgba(0,0,0,0.1);">15.8</td>
+              </tr>
+              <tr>
+                <td style="text-align: center; vertical-align: middle;">Llama-3.2-11B</td>
+                <td style="text-align: center; vertical-align: middle;">27.3</td>
+                <td style="text-align: center; vertical-align: middle;">1.8</td>
+                <td style="text-align: center; vertical-align: middle; background-color: rgba(0,0,0,0.05);">24.9</td>
+                <td style="text-align: center; vertical-align: middle;">28.3</td>
+                <td style="text-align: center; vertical-align: middle;">1.9</td>
+                <td style="text-align: center; vertical-align: middle; background-color: rgba(0,0,0,0.1);">16.1</td>
+              </tr>
+              <tr>
+                <td style="text-align: center; vertical-align: middle;">gpt-4o-mini</td>
+                <td style="text-align: center; vertical-align: middle;">27.0</td>
+                <td style="text-align: center; vertical-align: middle;">1.8</td>
+                <td style="text-align: center; vertical-align: middle; background-color: rgba(0,0,0,0.05);">26.1</td>
+                <td style="text-align: center; vertical-align: middle;">27.9</td>
+                <td style="text-align: center; vertical-align: middle;">1.8</td>
+                <td style="text-align: center; vertical-align: middle; background-color: rgba(0,0,0,0.1);">18.5</td>
+              </tr>
+              <tr>
+                <td style="text-align: center; vertical-align: middle;">Llama-3.2-90B</td>
+                <td style="text-align: center; vertical-align: middle;">26.2</td>
+                <td style="text-align: center; vertical-align: middle;">1.8</td>
+                <td style="text-align: center; vertical-align: middle; background-color: rgba(0,0,0,0.05);">28.4</td>
+                <td style="text-align: center; vertical-align: middle;">27.7</td>
+                <td style="text-align: center; vertical-align: middle;">1.9</td>
+                <td style="text-align: center; vertical-align: middle; background-color: rgba(0,0,0,0.1);">19.7</td>
+              </tr>
+              <tr>
+                <td style="text-align: center; vertical-align: middle;">Llama-3.1-70B</td>
+                <td style="text-align: center; vertical-align: middle;">26.9</td>
+                <td style="text-align: center; vertical-align: middle;">1.8</td>
+                <td style="text-align: center; vertical-align: middle; background-color: rgba(0,0,0,0.05);">30.1</td>
+                <td style="text-align: center; vertical-align: middle;">27.9</td>
+                <td style="text-align: center; vertical-align: middle;">1.9</td>
+                <td style="text-align: center; vertical-align: middle; background-color: rgba(0,0,0,0.1);">20.0</td>
+              </tr>
+              <tr>
+                <td style="text-align: center; vertical-align: middle;">Qwen2.5-72B</td>
+                <td style="text-align: center; vertical-align: middle;">25.5</td>
+                <td style="text-align: center; vertical-align: middle;">1.7</td>
+                <td style="text-align: center; vertical-align: middle; background-color: rgba(0,0,0,0.05);">30.1</td>
+                <td style="text-align: center; vertical-align: middle;">27.1</td>
+                <td style="text-align: center; vertical-align: middle;">1.8</td>
+                <td style="text-align: center; vertical-align: middle; background-color: rgba(0,0,0,0.1);">21.6</td>
+              </tr>
+              <tr>
+                <td style="text-align: center; vertical-align: middle;">Llama-3.1-405B</td>
+                <td style="text-align: center; vertical-align: middle;">24.2</td>
+                <td style="text-align: center; vertical-align: middle;">1.7</td>
+                <td style="text-align: center; vertical-align: middle; background-color: rgba(0,0,0,0.05);">38.6</td>
+                <td style="text-align: center; vertical-align: middle;">26.0</td>
+                <td style="text-align: center; vertical-align: middle;">1.8</td>
+                <td style="text-align: center; vertical-align: middle; background-color: rgba(0,0,0,0.1);">26.7</td>
+              </tr>
+              <tr>
+                <td style="text-align: center; vertical-align: middle;">gpt-4o</td>
+                <td style="text-align: center; vertical-align: middle;">23.4</td>
+                <td style="text-align: center; vertical-align: middle;">1.7</td>
+                <td style="text-align: center; vertical-align: middle; background-color: rgba(0,0,0,0.05);">37.8</td>
+                <td style="text-align: center; vertical-align: middle;">25.2</td>
+                <td style="text-align: center; vertical-align: middle;">1.8</td>
+                <td style="text-align: center; vertical-align: middle; background-color: rgba(0,0,0,0.1);">28.7</td>
+              </tr>
+              <tr>
+                <td style="text-align: center; vertical-align: middle;">DeepSeek-V3</td>
+                <td style="text-align: center; vertical-align: middle;">23.7</td>
+                <td style="text-align: center; vertical-align: middle;">1.7</td>
+                <td style="text-align: center; vertical-align: middle; background-color: rgba(0,0,0,0.05);">37.7</td>
+                <td style="text-align: center; vertical-align: middle;">25.1</td>
+                <td style="text-align: center; vertical-align: middle;">1.8</td>
+                <td style="text-align: center; vertical-align: middle; background-color: rgba(0,0,0,0.1);">29.5</td>
+              </tr>
+              <tr>
+                <td style="text-align: center; vertical-align: middle;">claude3.7-sonnet</td>
+                <td style="text-align: center; vertical-align: middle;">23.6</td>
+                <td style="text-align: center; vertical-align: middle;">1.7</td>
+                <td style="text-align: center; vertical-align: middle; background-color: rgba(0,0,0,0.05);">39.0</td>
+                <td style="text-align: center; vertical-align: middle;">24.6</td>
+                <td style="text-align: center; vertical-align: middle;">1.7</td>
+                <td style="text-align: center; vertical-align: middle; background-color: rgba(0,0,0,0.1);">33.8</td>
+              </tr>
+              <tr>
+                <td style="text-align: center; vertical-align: middle;">DeepSeek-R1</td>
+                <td style="text-align: center; vertical-align: middle;">18.6</td>
+                <td style="text-align: center; vertical-align: middle;">1.6</td>
+                <td style="text-align: center; vertical-align: middle; background-color: rgba(0,0,0,0.05);">49.8</td>
+                <td style="text-align: center; vertical-align: middle;">20.3</td>
+                <td style="text-align: center; vertical-align: middle;">1.7</td>
+                <td style="text-align: center; vertical-align: middle; background-color: rgba(0,0,0,0.1);">41.3</td>
+              </tr>
+              <tr>
+                <td style="text-align: center; vertical-align: middle;">o1-mini</td>
+                <td style="text-align: center; vertical-align: middle;">21.0</td>
+                <td style="text-align: center; vertical-align: middle;">1.6</td>
+                <td style="text-align: center; vertical-align: middle; background-color: rgba(0,0,0,0.05);">53.2</td>
+                <td style="text-align: center; vertical-align: middle;">21.5</td>
+                <td style="text-align: center; vertical-align: middle;">1.6</td>
+                <td style="text-align: center; vertical-align: middle; background-color: rgba(0,0,0,0.1);">47.7</td>
+              </tr>
+              <tr>
+                <td style="text-align: center; vertical-align: middle;">o3-mini</td>
+                <td style="text-align: center; vertical-align: middle;">15.6</td>
+                <td style="text-align: center; vertical-align: middle;">1.5</td>
+                <td style="text-align: center; vertical-align: middle; background-color: rgba(0,0,0,0.05);">59.5</td>
+                <td style="text-align: center; vertical-align: middle;">16.0</td>
+                <td style="text-align: center; vertical-align: middle;">1.6</td>
+                <td style="text-align: center; vertical-align: middle; background-color: rgba(0,0,0,0.1);">52.7</td>
+              </tr>
+            </tbody>
+          </table>
+          <caption style="caption-side: bottom; text-align: center; margin-top: 10px; font-size: larger;">
+            <strong>Table 1:</strong> CodeARC Leaderboard Results. <em># I/O</em> represents the average number of input-output examples queried; <em># Oracle</em> shows the average number of differential testing oracle calls; <em>Success (%)</em> indicates the percentage of problems successfully solved.
+          </caption>
+        </div>
+      </div>
+    </div>
+  
+  <br>
+  <br>
+
+  <div class="columns is-centered">
+    <div class="column is-full-width">
+      <div class="column is-12">
+        <h2 class="title">Overview</h2>
+        <div class="content has-text-centered">
+          <figure>
+            <img src="assets/x1.png" alt="CodeARC Overview" class="figure-img" style="max-width: 110%; width: auto; display: block; margin: 0 auto; transform: translateX(-5%);">
+            <figcaption style="font-style: normal; text-align: left;">
+              <strong>Figure 1:</strong> Overview of CodeARC. Our framework evaluates LLMs' reasoning capabilities in
+              inductive program synthesis. The agent begins with input-output examples, interacts with
+              a hidden target function via function calls, and uses a differential testing oracle to check the
+              correctness of the synthesized function for self-reflection and refinement.
+            </figcaption>
+          </figure>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <br>
+  <br>
+
+  <div class="columns is-centered">
+    <div class="column is-full-width">
+      <h2 class="title">Dataset</h2>
+      <div class="table-container">
+        <table class="table is-bordered is-striped is-narrow is-hoverable is-fullwidth">
+          <thead>
+            <tr>
+              <th style="text-align: center; vertical-align: middle;">Source</th>
+              <th style="text-align: center; vertical-align: middle;">Functions</th>
+              <th style="text-align: center; vertical-align: middle;">Lines of Code Min</th>
+              <th style="text-align: center; vertical-align: middle;">Lines of Code Max</th>
+              <th style="text-align: center; vertical-align: middle;">Lines of Code Avg</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="text-align: center; vertical-align: middle;">HumanEval+</td>
+              <td style="text-align: center; vertical-align: middle;">78</td>
+              <td style="text-align: center; vertical-align: middle;">7</td>
+              <td style="text-align: center; vertical-align: middle;">56</td>
+              <td style="text-align: center; vertical-align: middle;">18.5</td>
+            </tr>
+            <tr>
+              <td style="text-align: center; vertical-align: middle;">MBPP+</td>
+              <td style="text-align: center; vertical-align: middle;">131</td>
+              <td style="text-align: center; vertical-align: middle;">2</td>
+              <td style="text-align: center; vertical-align: middle;">21</td>
+              <td style="text-align: center; vertical-align: middle;">3.9</td>
+            </tr>
+            <tr>
+              <td style="text-align: center; vertical-align: middle;">APPS</td>
+              <td style="text-align: center; vertical-align: middle;">905</td>
+              <td style="text-align: center; vertical-align: middle;">2</td>
+              <td style="text-align: center; vertical-align: middle;">74</td>
+              <td style="text-align: center; vertical-align: middle;">9.5</td>
+            </tr>
+            <tr style="background-color: #f0f0f0; border-top: 2px solid #999; border-bottom: 2px solid #999;">
+              <td style="text-align: center; vertical-align: middle; font-weight: bold;" colspan="5">CodeARC Datasets</td>
+            </tr>
+            <tr>
+              <td style="text-align: center; vertical-align: middle;">CodeARC (Annotated)</td>
+              <td style="text-align: center; vertical-align: middle;">1114</td>
+              <td style="text-align: center; vertical-align: middle;">2</td>
+              <td style="text-align: center; vertical-align: middle;">74</td>
+              <td style="text-align: center; vertical-align: middle;">9.5</td>
+            </tr>
+            <tr>
+              <td style="text-align: center; vertical-align: middle;">CodeARC (Anonymized)</td>
+              <td style="text-align: center; vertical-align: middle;">1114</td>
+              <td style="text-align: center; vertical-align: middle;">2</td>
+              <td style="text-align: center; vertical-align: middle;">74</td>
+              <td style="text-align: center; vertical-align: middle;">9.5</td>
+            </tr>
+          </tbody>
+        </table>
+        <caption style="caption-side: bottom; text-align: center; margin-top: 10px;">
+          <strong>Table 2:</strong> Function count and code complexity statistics across dataset sources. The CodeARC benchmark is constructed from existing programming datasets (HumanEval+, MBPP+, and APPS). The Annotated version includes function names as synthesis hints, while the Anonymized version removes these semantic clues to increase difficulty.
+        </caption>
+      </div>
+    </div>
+  </div>
+
+  <br>
+  <br>
+
+  <div class="container is-max-desktop">
+    <div class="columns is-centered">
+      <div class="column is-full-width">
+        <h2 class="title">Scaling Trend</h2>
+        <div class="columns is-centered">
+          <div class="column is-12">
+            <div class="content has-text-centered">
+              <img src="assets/x2.png" alt="Scaling trend on CodeARC" class="figure-img" style="width: 100%;">
+              <figcaption style="font-style: normal;">
+                <strong>Figure 2:</strong> Scaling trend on CodeARC.
+              </figcaption>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <br>
+  <br>
+
+  <div class="container is-max-desktop">
+    <div class="columns is-centered">
+      <div class="column is-full-width">
+        <h2 class="title">Case Study</h2>
+        <div class="columns is-centered">
+          <div class="column is-12">
+            <div class="content">
+              <img src="assets/x3.png" alt="Case Study" class="figure-img" style="width: 100%;">
+              <figcaption style="font-style: normal; text-align: left;">
+                <strong>Figure 3:</strong> Case Study. The model queries edge cases, synthesizes a comparison function,
+                receives a counterexample from the oracle, and corrects it with a set-based solution.
+              </figcaption>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <br>
+  <br>
+  
+  <div class="container is-max-desktop content">
+    <h2 class="title">BibTeX</h2>
+    <pre><code>@article{wei2025codearc,
+    title={CodeARC: Benchmarking Reasoning Capabilities of LLM Agents for Inductive Program Synthesis},
+    author={Wei, Anjiang and Suresh, Tarun and Cao, Jiannan and Kannan, Naveen and Wu, Yuheng and Yan, Kai and Teixeira, Thiago SFX and Wang, Ke and Aiken, Alex},
+    journal={arXiv preprint arXiv:2503.23145},
+    year={2025}
+}</code></pre>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="container">
+    <div class="columns is-centered">
+      <div class="column is-8">
+        <div class="content">
+          <p>
+            This website is licensed under a 
+            <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">
+              Creative Commons Attribution-ShareAlike 4.0 International License
+            </a>. 
+            The website template is from the 
+            <a href="https://github.com/nerfies/nerfies.github.io">
+              Nerfies
+            </a> 
+            project page.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
