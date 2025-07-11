@@ -515,7 +515,7 @@ Unlike prior work that focuses on inference rule-based reasoning, which often in
         <h2 class="title">Overview</h2>
         <div class="content has-text-centered">
           <figure>
-            <img src="assets/x1.svg" alt="SATBench Overview" class="figure-img" style="max-width: 110%; width: auto; display: block; margin: 0 auto; transform: translateX(-5%);">
+            <img src="assets/x1.svg" alt="SATBench Overview" class="figure-img" style="max-width: 100%; width: auto; display: block; margin: 0 auto; transform: translateX(-5%);">
             <figcaption style="font-style: normal; text-align: left;">
               <strong>Figure 1:</strong> Overview of the SATBench methodology. The generation pipeline begins with sampling Conjunctive Normal Form (CNF) formulas, followed by LLM-driven creation of story backgrounds and conditions. To ensure the logical puzzle's quality, both LLM-assisted and solver-based consistency validations are employed. The evaluation pipeline then examines the puzzle's prediction outcomes and checks its reasoning process.
             </figcaption>
@@ -528,64 +528,64 @@ Unlike prior work that focuses on inference rule-based reasoning, which often in
   <br>
   <br>
 
-  <div class="columns is-centered">
-    <div class="column is-full-width">
-      <h2 class="title">Dataset</h2>
-      <div class="table-container">
-        <table class="table is-bordered is-striped is-narrow is-hoverable is-fullwidth">
-          <thead>
-            <tr>
-              <th style="text-align: center; vertical-align: middle;">Source</th>
-              <th style="text-align: center; vertical-align: middle;">Functions</th>
-              <th style="text-align: center; vertical-align: middle;">Lines of Code Min</th>
-              <th style="text-align: center; vertical-align: middle;">Lines of Code Max</th>
-              <th style="text-align: center; vertical-align: middle;">Lines of Code Avg</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td style="text-align: center; vertical-align: middle;">HumanEval+</td>
-              <td style="text-align: center; vertical-align: middle;">78</td>
-              <td style="text-align: center; vertical-align: middle;">7</td>
-              <td style="text-align: center; vertical-align: middle;">56</td>
-              <td style="text-align: center; vertical-align: middle;">18.5</td>
-            </tr>
-            <tr>
-              <td style="text-align: center; vertical-align: middle;">MBPP+</td>
-              <td style="text-align: center; vertical-align: middle;">131</td>
-              <td style="text-align: center; vertical-align: middle;">2</td>
-              <td style="text-align: center; vertical-align: middle;">21</td>
-              <td style="text-align: center; vertical-align: middle;">3.9</td>
-            </tr>
-            <tr>
-              <td style="text-align: center; vertical-align: middle;">APPS</td>
-              <td style="text-align: center; vertical-align: middle;">905</td>
-              <td style="text-align: center; vertical-align: middle;">2</td>
-              <td style="text-align: center; vertical-align: middle;">74</td>
-              <td style="text-align: center; vertical-align: middle;">9.5</td>
-            </tr>
-            <tr style="background-color: #f0f0f0; border-top: 2px solid #999; border-bottom: 2px solid #999;">
-              <td style="text-align: center; vertical-align: middle; font-weight: bold;" colspan="5">CodeARC Datasets</td>
-            </tr>
-            <tr>
-              <td style="text-align: center; vertical-align: middle;">CodeARC (Annotated)</td>
-              <td style="text-align: center; vertical-align: middle;">1114</td>
-              <td style="text-align: center; vertical-align: middle;">2</td>
-              <td style="text-align: center; vertical-align: middle;">74</td>
-              <td style="text-align: center; vertical-align: middle;">9.5</td>
-            </tr>
-            <tr>
-              <td style="text-align: center; vertical-align: middle;">CodeARC (Anonymized)</td>
-              <td style="text-align: center; vertical-align: middle;">1114</td>
-              <td style="text-align: center; vertical-align: middle;">2</td>
-              <td style="text-align: center; vertical-align: middle;">74</td>
-              <td style="text-align: center; vertical-align: middle;">9.5</td>
-            </tr>
-          </tbody>
-        </table>
-        <caption style="caption-side: bottom; text-align: center; margin-top: 10px;">
-          <strong>Table 2:</strong> Function count and code complexity statistics across dataset sources. The CodeARC benchmark is constructed from existing programming datasets (HumanEval+, MBPP+, and APPS). The Annotated version includes function names as synthesis hints, while the Anonymized version removes these semantic clues to increase difficulty.
-        </caption>
+<div class="columns is-centered">
+  <div class="column is-full-width">
+    <h2 class="title">Dataset</h2>
+    <div class="table-container">
+      <table class="table is-bordered is-striped is-narrow is-hoverable is-fullwidth">
+        <thead>
+          <tr>
+            <th style="text-align: center; vertical-align: middle;">Metric</th>
+            <th style="text-align: center; vertical-align: middle;">Value</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="text-align: center; vertical-align: middle;">Number of Instances</td>
+            <td style="text-align: center; vertical-align: middle;">\datasetsize</td>
+          </tr>
+          <tr>
+            <td style="text-align: center; vertical-align: middle;">Average Number of Variables</td>
+            <td style="text-align: center; vertical-align: middle;">35.8</td>
+          </tr>
+          <tr>
+            <td style="text-align: center; vertical-align: middle;">Average Number of Clauses</td>
+            <td style="text-align: center; vertical-align: middle;">20.6</td>
+          </tr>
+          <tr>
+            <td style="text-align: center; vertical-align: middle;">Average Number of Words</td>
+            <td style="text-align: center; vertical-align: middle;">554.9</td>
+          </tr>
+          <tr>
+            <td style="text-align: center; vertical-align: middle;">Average Number of Sentences</td>
+            <td style="text-align: center; vertical-align: middle;">55.5</td>
+          </tr>
+        </tbody>
+      </table>
+      <caption style="caption-side: bottom; text-align: center; margin-top: 10px;">
+        <strong>Table 2:</strong> Dataset statistics for SATBench.
+      </caption>
+    </div>
+  </div>
+</div>
+
+  <br>
+  <br>
+
+  <div class="container is-max-desktop">
+    <div class="columns is-centered">
+      <div class="column is-full-width">
+        <h2 class="title">Benchmark Curation Pipeline Example</h2>
+        <div class="columns is-centered">
+          <div class="column is-12">
+            <div class="content">
+              <img src="assets/x2.svg" alt="Example" class="figure-img" style="width: 100%;">
+              <figcaption style="font-style: normal; text-align: left;">
+                <strong>Figure 2:</strong> Benchmark curation pipeline example. The process starts with sampling SAT formulas, followed by using a LLM to generate variable mappings and a story background. Clauses in the formula are then translated into narrative conditions. Consistency between the original formula and the generated puzzle is ensured through both LLM-based and solver-based validation.
+              </figcaption>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -593,16 +593,16 @@ Unlike prior work that focuses on inference rule-based reasoning, which often in
   <br>
   <br>
 
-  <div class="container is-max-desktop">
+   <div class="container is-max-desktop">
     <div class="columns is-centered">
       <div class="column is-full-width">
         <h2 class="title">Scaling Trend</h2>
         <div class="columns is-centered">
           <div class="column is-12">
             <div class="content has-text-centered">
-              <img src="assets/x2.png" alt="Scaling trend on CodeARC" class="figure-img" style="width: 100%;">
+              <img src="assets/x3.svg" alt="Scaling trend on SATBench" class="figure-img" style="width: 100%;">
               <figcaption style="font-style: normal;">
-                <strong>Figure 2:</strong> Scaling trend on CodeARC.
+                <strong>Figure 3:</strong> Scaling trend on SATBench.
               </figcaption>
             </div>
           </div>
@@ -617,14 +617,13 @@ Unlike prior work that focuses on inference rule-based reasoning, which often in
   <div class="container is-max-desktop">
     <div class="columns is-centered">
       <div class="column is-full-width">
-        <h2 class="title">Case Study</h2>
+        <h2 class="title">Difficulty Analysis</h2>
         <div class="columns is-centered">
           <div class="column is-12">
-            <div class="content">
-              <img src="assets/x3.png" alt="Case Study" class="figure-img" style="width: 100%;">
-              <figcaption style="font-style: normal; text-align: left;">
-                <strong>Figure 3:</strong> Case Study. The model queries edge cases, synthesizes a comparison function,
-                receives a counterexample from the oracle, and corrects it with a set-based solution.
+            <div class="content has-text-centered">
+              <img src="assets/x4.svg" alt="Difficulty Analysis" class="figure-img" style="width: 100%;">
+              <figcaption style="font-style: normal;">
+                <strong>Figure 4:</strong> Difficulty Analysis. Impact of clause quantity on accuracy.
               </figcaption>
             </div>
           </div>
@@ -635,14 +634,67 @@ Unlike prior work that focuses on inference rule-based reasoning, which often in
 
   <br>
   <br>
+
+  <div class="columns is-centered">
+  <div class="column is-full-width">
+    <h2 class="title" style="margin-top: 2em;">Reasoning Trace Evaluation</h2>
+    <div class="table-container">
+      <table class="table is-bordered is-striped is-narrow is-hoverable is-fullwidth">
+        <thead>
+          <tr>
+            <th rowspan="2" style="text-align: center; vertical-align: middle;">Model</th>
+            <th colspan="2" style="text-align: center;">SAT</th>
+            <th colspan="2" style="text-align: center;">UNSAT</th>
+            <th rowspan="2" style="text-align: center; vertical-align: middle;">Overall<br>Trace</th>
+          </tr>
+          <tr>
+            <th style="text-align: center;">Pred.</th>
+            <th style="text-align: center;">Trace</th>
+            <th style="text-align: center;">Pred.</th>
+            <th style="text-align: center;">Trace</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="text-align: center;">QwQ</td>
+            <td>76.9</td><td>51.9</td><td>60.7</td><td>52.4</td><td>52.2</td>
+          </tr>
+          <tr>
+            <td style="text-align: center;">Claude-3.7</td>
+            <td>83.0</td><td>46.1</td><td>66.4</td><td>61.1</td><td>53.6</td>
+          </tr>
+          <tr>
+            <td style="text-align: center;">DS-V3</td>
+            <td>83.1</td><td>63.3</td><td>85.0</td><td>71.1</td><td>67.2</td>
+          </tr>
+          <tr>
+            <td style="text-align: center;">o4-mini</td>
+            <td>95.0</td><td>73.2</td><td>83.6</td><td>74.1</td><td>73.7</td>
+          </tr>
+          <tr>
+            <td style="text-align: center;">DS-R1</td>
+            <td>84.5</td><td>70.3</td><td>90.3</td><td>82.1</td><td>76.2</td>
+          </tr>
+        </tbody>
+      </table>
+      <caption style="caption-side: bottom; text-align: center; margin-top: 10px;">
+        <strong>Table 3:</strong> Accuracy in prediction and reasoning trace evaluation.
+      </caption>
+    </div>
+  </div>
+</div>
+
+
+  <br>
+  <br>
   
   <div class="container is-max-desktop content">
     <h2 class="title">BibTeX</h2>
-    <pre><code>@article{wei2025codearc,
-    title={CodeARC: Benchmarking Reasoning Capabilities of LLM Agents for Inductive Program Synthesis},
-    author={Wei, Anjiang and Suresh, Tarun and Cao, Jiannan and Kannan, Naveen and Wu, Yuheng and Yan, Kai and Teixeira, Thiago SFX and Wang, Ke and Aiken, Alex},
-    journal={arXiv preprint arXiv:2503.23145},
-    year={2025}
+    <pre><code>@article{wei2025satbench,
+  title={SATBench: Benchmarking LLMs' Logical Reasoning via Automated Puzzle Generation from SAT Formulas},
+  author={Wei, Anjiang and Wu, Yuheng and Wan, Yingjia and Suresh, Tarun and Tan, Huanmi and Zhou, Zhanke and Koyejo, Sanmi and Wang, Ke and Aiken, Alex},
+  journal={arXiv preprint arXiv:2505.14615},
+  year={2025}
 }</code></pre>
   </div>
 </section>
